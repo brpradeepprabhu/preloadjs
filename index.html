@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="assets/src/common/Proxy.js"></script>
+    <script src="assets/src/common/Extend.js"></script>
+    <script src="assets/src/common/EventDispatcher.js"></script>
+    <script src="assets/src/SoundInstance.js"></script>
+    <script src="assets/src/Preloadjs.js"></script>
+    <script src="assets/src/Soundjs.js"></script>
+</head>
+<script>
+    var preload= new assetLoader.preload();
+    var soundClass= new assetLoader.soundjs();
+    function init()
+    {
+        preload.name="preload";
+        var manifest=[
+            {src:"assets/sounds/a.mp3",id:"a"},
+            {src:"assets/images/abb1.png",id:"abb1"},
+            {src:"assets/images/Maari.png",id:"Maari"},
+            {src:"assets/src/common/Extend.js",id:"Extend"}
+        ];
+        preload.loadManifest(manifest);
+        preload.addEventListener("complete",assetLoader.proxy(onCompleteFn,this,preload.name));
+
+    }
+    function onCompleteFn(name)
+    {
+
+        document.getElementById(name).innerHTML="Load Completed";
+
+        var soundInstance = soundClass.play("a")
+        soundInstance.addEventListener('complete',soundComplete);
+        soundClass.play("a")
+    }
+    function soundComplete()
+    {
+        console.log("end");
+    }
+
+
+</script>
+<body onload="init()">
+ <div id="preload1">images and javascript loading is in progress </div>
+ <div id="preload">sound loading is in progress </div>
+<button onclick=" soundClass.mute()">mute</button>
+ <button onclick="soundClass.unMute()">unmute</button>
+ <button onclick="soundClass.setVolume(0.5)">set volume to 5</button>
+ <button onclick="soundClass.pause('a')">pause sound</button>
+ <button onclick="soundClass.resume('a')">resume sound</button>
+</body>
+</html>
